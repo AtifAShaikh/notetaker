@@ -33,5 +33,24 @@ router.post('/notes', (req, res) => {
 });
 
 
+router.delete('/notes/:id', (req,res) => {
+    const idToDelete = req.params.id;
+    fs.readFile('db/db.json', {encoding: 'utf8'},(err, data) => {
+        if (err) throw err;
+        data = JSON.parse(data);
+        for(var i = 0; i < data.length; i++){
+            if(data[i].id == idToDelete){
+                data.splice(i, 1);
+                data = JSON.stringify(data);
+                fs.writeFile('db/db.json', data,(err, data) => {
+                    if (err) throw err;
+                    res.send('sucess');
+                });
+            }
+        }
+    });
+});
+
+
 
 module.exports = router;
